@@ -7,6 +7,7 @@ import ExerciseOne from './exercises/ExerciseOne';
 import ExerciseTwo from './exercises/ExerciseTwo';
 import ExerciseThree from './exercises/ExerciseThree';
 import MainLayout from '../../layouts/MainLayout';
+import Header from '../../components/Header';
 
 export default function Atividade1Screen() {
   const [currentExercise, setCurrentExercise] = useState(1);
@@ -38,15 +39,13 @@ export default function Atividade1Screen() {
       )}
 
       <View style={{ flex: 1}}>         
-        <View style={{ flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: '#f1f5f9', paddingBottom: 20, marginBottom: 20 }}>
-          <View style={{ padding: 12, backgroundColor: '#e0f2fe', borderRadius: 12, marginRight: 12 }}>
-            <Code2 size={24} color="#0ea5e9" />
-          </View>
-          <View style={{ flex: 1 }}>
-            <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#1e293b' }}>Prática Mobile</Text>
-            <Text style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>Prof. Thiago Goldoni Thomé</Text>
-          </View>
-        </View>
+        <Header 
+          title="Prática Mobile" 
+          subtitle="Prof. Thiago Goldoni Thomé" 
+          icon={Code2} 
+          iconColor="#0ea5e9" 
+          iconBgColor="#e0f2fe" 
+        />
 
         <TabNavigation 
           tabs={tabs} 

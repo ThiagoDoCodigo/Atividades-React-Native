@@ -26,8 +26,8 @@ export default function MainLayout({ children, className = '' }: MainLayoutProps
         flex: 1, 
         opacity: fadeAnim,
         paddingBottom: insets.bottom,
-        paddingLeft: Math.max(insets.left, 16),
-        paddingRight: Math.max(insets.right, 16), 
+        paddingLeft: Math.max(insets.left, 14),
+        paddingRight: Math.max(insets.right, 14), 
       }} 
       className={`bg-white pt-3 ${className}`}
     >

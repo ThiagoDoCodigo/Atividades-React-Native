@@ -1,6 +1,6 @@
 import { LayoutDashboard, CodeXml } from 'lucide-react-native';
-import Atividade1Screen from '../screens/atividade1/Atividade1Screen';
-import Atividade2Screen from '../screens/atividade2/Atividade2Screen';
+import Atividade1Screen from '../features/atividade1/screens/Atividade1Screen';
+import Atividade2Screen from '../features/atividade2/screens/Atividade2Screen';
 
 export const APP_ROUTES = [
   {

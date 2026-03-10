@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { Trophy, Star } from 'lucide-react-native';
-import MainLayout from '../../layouts/MainLayout';
-import Header from '../../components/Header';
+import Header from '../../../components/Header';
 
-import CustomCard from '../../components/CustomCard';
-import AlertModal from '../../components/AlertModal';
+import CustomCard from '../../../components/CustomCard';
+import AlertModal from '../../../components/AlertModal';
 
 const clubes = [
   {

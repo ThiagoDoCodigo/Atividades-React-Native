@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Modal, View, Text, TouchableOpacity, Pressable, Animated, ScrollView } from 'react-native';
 import { Info, X } from 'lucide-react-native';
 

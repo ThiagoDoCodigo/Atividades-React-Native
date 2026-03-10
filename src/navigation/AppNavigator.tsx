@@ -1,11 +1,9 @@
-import React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { Menu } from 'lucide-react-native';
 import Sidebar from '../components/Sidebar';
-
-import Atividade1Screen from '../screens/atividade1/Atividade1Screen';
-import Atividade2Screen from '../screens/atividade2/Atividade2Screen';
+import WithMainLayout from '../layouts/helper/WithMainLayout';
+import { APP_ROUTES } from '../config/routes';
 
 const Drawer = createDrawerNavigator();
 
@@ -40,16 +38,14 @@ export default function AppNavigator() {
         sceneContainerStyle: { backgroundColor: '#f9fafb' },
       })}
     >
-      <Drawer.Screen 
-        name="Atividade1" 
-        component={Atividade1Screen} 
-        options={{ title: 'Atividade 1' }} 
-      />
-      <Drawer.Screen 
-        name="Atividade2" 
-        component={Atividade2Screen} 
-        options={{ title: 'Atividade 2' }} 
-      />
+      {APP_ROUTES.map((route) => (
+        <Drawer.Screen 
+          key={route.name}
+          name={route.name}
+          component={WithMainLayout(route.component)} 
+          options={{ title: route.label }}
+        />
+      ))}
     </Drawer.Navigator>
   );
 }

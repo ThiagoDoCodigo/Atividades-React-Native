@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { TouchableOpacity, Text, View, ActivityIndicator } from 'react-native';
 import Animated, { FadeIn, FadeOut, ZoomIn } from 'react-native-reanimated';
 import { Check, X, CheckCheck, ArrowRight } from 'lucide-react-native';

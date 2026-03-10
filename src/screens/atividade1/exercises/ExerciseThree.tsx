@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, Text, ScrollView, Keyboard, TouchableOpacity } from 'react-native';
 import { Plus, ListChecks, Trash2 } from 'lucide-react-native';
 import InputField from '../../../components/InputField';

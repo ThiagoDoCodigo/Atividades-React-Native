@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, Text, FlatList } from 'react-native';
 import { Trophy, Star } from 'lucide-react-native';
 import MainLayout from '../../layouts/MainLayout';
@@ -129,7 +129,7 @@ export default function Atividade2Screen() {
   };
 
   return (
-    <MainLayout>
+    <>
       <AlertModal
         isOpen={modalVisible}
         onClose={() => setModalVisible(false)}
@@ -165,6 +165,6 @@ export default function Atividade2Screen() {
           )}
         />
       </View>
-    </MainLayout>
+    </>
   );
 }

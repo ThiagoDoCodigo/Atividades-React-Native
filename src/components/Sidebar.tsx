@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { User, LogOut } from 'lucide-react-native';
 import { APP_ROUTES } from '../config/routes';
-import LogoApp from '../../assets/logo-react.png';
+const LogoApp = require('../../assets/logo-react.png');
 
 export default function Sidebar(props: any) {
   const { state, navigation } = props;

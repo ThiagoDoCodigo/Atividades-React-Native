@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, ScrollView, Image } from 'react-native';
 import { Image as ImageIcon } from 'lucide-react-native';
 

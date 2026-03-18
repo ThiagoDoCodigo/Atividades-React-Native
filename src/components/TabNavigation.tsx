@@ -1,4 +1,6 @@
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { colors } from '../config/theme';
+import Typography from './Typography';
 
 interface Tab {
   id: number;
@@ -26,14 +28,13 @@ export default function TabNavigation({ tabs, currentTab, setCurrentTab }: TabNa
               isActive && styles.tabActive
             ]}
           >
-            <Text 
-              style={[
-                styles.text,
-                isActive ? styles.textActive : styles.textInactive
-              ]}
+            <Typography 
+              variant="body"
+              weight={isActive ? 'bold' : 'semibold'}
+              color={isActive ? colors.primary.main : colors.text.secondary}
             >
               {tab.label}
-            </Text>
+            </Typography>
           </TouchableOpacity>
         );
       })}
@@ -44,7 +45,7 @@ export default function TabNavigation({ tabs, currentTab, setCurrentTab }: TabNa
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#f1f5f9',
+    backgroundColor: colors.surfaceHighlight,
     padding: 4,
     borderRadius: 12,
     marginBottom: 24,
@@ -58,21 +59,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   tabActive: {
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     shadowColor: '#000',
     shadowOpacity: 0.05,
     shadowRadius: 2,
     elevation: 1,
-  },
-  text: {
-    fontSize: 14,
-  },
-  textActive: {
-    fontWeight: 'bold',
-    color: '#0ea5e9',
-  },
-  textInactive: {
-    fontWeight: '600',
-    color: '#64748b',
   },
 });

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Keyboard } from 'react-native';
+import { View, Keyboard, StyleSheet } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Save, Trash2, ClipboardList } from 'lucide-react-native';
 
@@ -33,7 +33,7 @@ export default function TaskDetailScreen() {
     if (success) {
       await new Promise(resolve => setTimeout(resolve, 600)); 
       setTimeout(() => navigation.goBack(), 600);
-    }else{
+    } else {
       throw new Error(error);
     }
   };
@@ -44,7 +44,7 @@ export default function TaskDetailScreen() {
   };
 
   return (
-    <View className="flex-1">
+    <View style={styles.container}>
       <ConfirmationModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -63,15 +63,15 @@ export default function TaskDetailScreen() {
         iconBgColor="#e0f2fe" 
       />
 
-      <View className="flex-1">
+      <View style={styles.formContainer}>
         <InputField 
           label="Título da Tarefa *" 
           placeholder="Ex: Estudar React Native" 
           value={title}
           onChangeText={(text) => viewModel.setTitle(text)}
+          error={error}
         />
-        {error ? <Text className="text-red-500 text-xs ml-1 mb-4 -mt-2 font-medium">{error}</Text> : null}
-
+        
         <InputField 
           label="Descrição (Opcional)" 
           placeholder="Detalhes adicionais..." 
@@ -79,11 +79,11 @@ export default function TaskDetailScreen() {
           onChangeText={(text) => viewModel.setDescription(text)}
           multiline
           numberOfLines={4}
-          style={{ height: 100, textAlignVertical: 'top', paddingTop: 12 }}
+          style={styles.textArea}
         />
       </View>
 
-      <View className="pb-8 gap-3">
+      <View style={styles.footer}>
         <ActionButton 
           label="Salvar Tarefa" 
           errorLabel='Erro ao salvar tarefa'
@@ -103,3 +103,21 @@ export default function TaskDetailScreen() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  formContainer: {
+    flex: 1,
+  },
+  textArea: {
+    height: 100,
+    textAlignVertical: 'top',
+    paddingTop: 12,
+  },
+  footer: {
+    paddingBottom: 32,
+    gap: 12,
+  }
+});

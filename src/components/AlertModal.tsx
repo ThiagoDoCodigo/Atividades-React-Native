@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { Modal, View, Text, TouchableOpacity, Pressable, Animated, ScrollView, StyleSheet } from 'react-native';
+import { Modal, View, TouchableOpacity, Pressable, Animated, ScrollView, StyleSheet } from 'react-native';
 import { Info, X } from 'lucide-react-native';
+import { colors } from '../config/theme';
+import Typography from './Typography';
+import Button from './CustomButton';
 
 interface AlertModalProps {
   isOpen: boolean;
@@ -45,27 +48,29 @@ export default function AlertModal({
             <View style={styles.header}>
               <View style={styles.headerLeft}>
                 <View style={styles.iconContainer}>
-                  <Info size={24} color="#0ea5e9" strokeWidth={2} />
+                  <Info size={24} color={colors.info.main} strokeWidth={2} />
                 </View>
-                <Text style={styles.title}>{title}</Text>
+                <Typography variant="title" style={styles.titleText}>
+                  {title}
+                </Typography>
               </View>
               <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                <X size={20} color="#94a3b8" />
+                <X size={20} color={colors.text.muted} />
               </TouchableOpacity>
             </View>
+            
             <ScrollView style={styles.body}>
-              <Text style={styles.message}>
+              <Typography variant="body" align="justify" style={styles.message}>
                 {message || "Nenhuma mensagem foi informada."}
-              </Text>
+              </Typography>
             </ScrollView>
+            
             <View style={styles.footer}>
-              <TouchableOpacity
-                onPress={onClose}
-                activeOpacity={0.7}
-                style={styles.actionButton}
-              >
-                <Text style={styles.buttonText}>{buttonText}</Text>
-              </TouchableOpacity>
+              <Button 
+                label={buttonText} 
+                onPress={onClose} 
+                variant="primary" 
+              />
             </View>
           </Animated.View>
         </Pressable>
@@ -86,11 +91,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   modal: {
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     borderRadius: 16,
     width: '100%',
     borderWidth: 1,
-    borderColor: '#f1f5f9',
+    borderColor: colors.border,
     height: 'auto',
     maxHeight: '90%',
     overflow: 'hidden',
@@ -106,7 +111,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#f1f5f9',
+    borderBottomColor: colors.border,
   },
   headerLeft: {
     flexDirection: 'row',
@@ -117,51 +122,27 @@ const styles = StyleSheet.create({
     padding: 8,
     borderRadius: 9999,
     borderWidth: 1,
-    backgroundColor: '#f0f9ff',
-    borderColor: '#e0f2fe',
+    backgroundColor: colors.primary.faded,
+    borderColor: colors.primary.light,
   },
-  title: {
+  titleText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#1e293b',
   },
   closeButton: {
     padding: 6,
     borderRadius: 8,
-    backgroundColor: '#f8fafc',
+    backgroundColor: colors.surfaceHighlight,
   },
   body: {
     padding: 24,
   },
   message: {
-    fontSize: 14,
-    color: '#475569',
-    lineHeight: 22,
-    textAlign: 'justify',
     marginBottom: 16,
   },
   footer: {
     padding: 20,
-    backgroundColor: '#f8fafc',
+    backgroundColor: colors.surfaceHighlight,
     borderTopWidth: 1,
-    borderTopColor: '#f1f5f9',
-  },
-  actionButton: {
-    width: '100%',
-    paddingVertical: 12,
-    backgroundColor: '#0ea5e9',
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#bae6fd',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontWeight: 'bold',
-    fontSize: 14,
+    borderTopColor: colors.border,
   },
 });

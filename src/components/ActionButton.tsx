@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { TouchableOpacity, View, ActivityIndicator, StyleSheet, StyleProp, ViewStyle } from 'react-native';
 import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
 import { Check, X, ArrowRight } from 'lucide-react-native';
+import { colors } from '../config/theme';
+import Typography from './Typography';
 
 export type ButtonVariant = 'primary' | 'outline' | 'danger';
 
@@ -46,26 +48,24 @@ export default function ActionButton({
     }
   };
 
-  const getColors = () => {
-    if (status === 'success') return { bg: '#10b981', border: '#10b981', text: '#ffffff' };
-    if (status === 'error') return { bg: '#ef4444', border: '#ef4444', text: '#ffffff' };
+  const getThemeColors = () => {
+    if (status === 'success') return { bg: colors.success.main, border: colors.success.main, text: colors.text.inverse };
+    if (status === 'error') return { bg: colors.danger.main, border: colors.danger.main, text: colors.text.inverse };
 
     switch (variant) {
       case 'danger':
-        return { bg: '#fef2f2', border: '#fecaca', text: '#dc2626' };
+        return { bg: colors.danger.faded, border: colors.danger.light, text: colors.danger.main };
       case 'outline':
-        return { bg: 'transparent', border: '#cbd5e1', text: '#334155' };
+        return { bg: 'transparent', border: colors.borderFocus, text: colors.text.secondary };
       case 'primary':
       default:
-        return { bg: '#0ea5e9', border: '#0ea5e9', text: '#ffffff' };
+        return { bg: colors.primary.main, border: colors.primary.main, text: colors.text.inverse };
     }
   };
 
-  const colors = getColors();
+  const currentColors = getThemeColors();
   const isLeftIcon = iconPosition === 'left';
-
-  const iconColor = colors.text === '#ffffff' ? '#ffffff' : 
-                    colors.text === '#dc2626' ? '#dc2626' : '#334155';
+  const iconColor = currentColors.text;
 
   return (
     <TouchableOpacity
@@ -74,7 +74,7 @@ export default function ActionButton({
       disabled={status === 'loading'}
       style={[
         styles.container,
-        { backgroundColor: colors.bg, borderColor: colors.border },
+        { backgroundColor: currentColors.bg, borderColor: currentColors.border },
         status === 'loading' ? styles.opacity90 : styles.opacity100,
         style
       ]}
@@ -96,37 +96,45 @@ export default function ActionButton({
 
           {status === 'success' && (
             <Animated.View entering={ZoomIn.springify()}>
-              <Check size={20} color="#ffffff" strokeWidth={3} />
+              <Check size={20} color={colors.text.inverse} strokeWidth={3} />
             </Animated.View>
           )}
 
           {status === 'error' && (
             <Animated.View entering={ZoomIn.springify()}>
-              <X size={20} color="#ffffff" strokeWidth={3} />
+              <X size={20} color={colors.text.inverse} strokeWidth={3} />
             </Animated.View>
           )}
         </View>
 
         <View style={styles.textContainer}>
           {status === 'idle' && (
-            <Animated.Text entering={FadeIn.duration(200)} style={[styles.text, { color: colors.text }]}>
-              {label}
-            </Animated.Text>
+            <Animated.View entering={FadeIn.duration(200)}>
+              <Typography weight="bold" color={currentColors.text} style={styles.textLabel}>
+                {label}
+              </Typography>
+            </Animated.View>
           )}
           {status === 'loading' && (
-            <Animated.Text entering={FadeIn.duration(200)} style={[styles.text, { color: colors.text }]}>
-              {loadingLabel}
-            </Animated.Text>
+            <Animated.View entering={FadeIn.duration(200)}>
+              <Typography weight="bold" color={currentColors.text} style={styles.textLabel}>
+                {loadingLabel}
+              </Typography>
+            </Animated.View>
           )}
           {status === 'success' && (
-            <Animated.Text entering={FadeIn.duration(200)} style={[styles.text, { color: '#ffffff' }]}>
-              {successLabel}
-            </Animated.Text>
+            <Animated.View entering={FadeIn.duration(200)}>
+              <Typography weight="bold" color={colors.text.inverse} style={styles.textLabel}>
+                {successLabel}
+              </Typography>
+            </Animated.View>
           )}
           {status === 'error' && (
-            <Animated.Text entering={FadeIn.duration(200)} style={[styles.text, { color: '#ffffff' }]}>
-              {errorLabel}
-            </Animated.Text>
+            <Animated.View entering={FadeIn.duration(200)}>
+              <Typography weight="bold" color={colors.text.inverse} style={styles.textLabel}>
+                {errorLabel}
+              </Typography>
+            </Animated.View>
           )}
         </View>
 
@@ -171,8 +179,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
   },
-  text: {
-    fontWeight: 'bold',
+  textLabel: {
     fontSize: 15,
   },
 });

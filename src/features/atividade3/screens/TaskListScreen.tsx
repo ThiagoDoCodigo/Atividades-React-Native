@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
-import { View, FlatList, Text } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { ListTodo, Clock, Plus, ChevronRight } from 'lucide-react-native';
 
 import Header from '../../../components/Header';
 import CustomCard from '../../../components/CustomCard';
 import CustomButton from '../../../components/CustomButton';
+import EmptyState from '../../../components/EmptyState';
 import { useTaskListViewModel } from '../viewModel/taskList.viewModel';
 
 export default function TaskListScreen() {
@@ -27,7 +28,7 @@ export default function TaskListScreen() {
   };
 
   return (
-    <View className="flex-1">
+    <View style={styles.container}>
       <Header 
         title="Minhas Tarefas" 
         subtitle="Organize seu dia a dia" 
@@ -40,12 +41,8 @@ export default function TaskListScreen() {
         data={tasks}
         keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100 }}
-        ListEmptyComponent={() => (
-          <View className="py-10 items-center justify-center">
-            <Text className="text-slate-400 text-sm italic">Nenhuma tarefa encontrada.</Text>
-          </View>
-        )}
+        contentContainerStyle={styles.listContent}
+        ListEmptyComponent={() => <EmptyState message="Nenhuma tarefa encontrada." />}
         renderItem={({ item }) => (
           <CustomCard
             title={item.title}
@@ -60,15 +57,28 @@ export default function TaskListScreen() {
         )}
       />
 
-      <View className="absolute bottom-6 w-full">
+      <View style={styles.floatingButtonContainer}>
         <CustomButton 
           label="Nova Tarefa" 
           icon={Plus} 
           onPress={handleCreateTask}
-          className="w-full"
           disabled={false}
         />
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  listContent: {
+    paddingBottom: 100,
+  },
+  floatingButtonContainer: {
+    position: 'absolute',
+    bottom: 24,
+    width: '100%',
+  }
+});

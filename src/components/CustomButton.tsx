@@ -1,4 +1,6 @@
-import { TouchableOpacity, Text, View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { TouchableOpacity, View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import { colors } from '../config/theme';
+import Typography from './Typography';
 
 export type ButtonVariant = 'primary' | 'outline' | 'danger';
 
@@ -22,28 +24,22 @@ export default function Button({
   disabled = false,
 }: ButtonProps) {
   
-  const getColors = () => {
+  const getThemeColors = () => {
     switch (variant) {
       case 'danger':
-        return { bg: '#fef2f2', border: '#fecaca', text: '#dc2626' };
+        return { bg: colors.danger.faded, border: colors.danger.light, text: colors.danger.main };
       case 'outline':
-        return { bg: 'transparent', border: '#cbd5e1', text: '#334155' };
+        return { bg: 'transparent', border: colors.borderFocus, text: colors.text.secondary };
       case 'primary':
       default:
-        return { bg: '#0ea5e9', border: '#0ea5e9', text: '#ffffff' };
+        return { bg: colors.primary.main, border: colors.primary.main, text: colors.text.inverse };
     }
   };
 
-  const colors = getColors();
+  const themeColors = getThemeColors();
   const isLeftIcon = iconPosition === 'left';
 
-  const iconColor = disabled 
-    ? '#94a3b8'
-    : colors.text === '#ffffff' 
-      ? '#ffffff' 
-      : colors.text === '#dc2626' 
-        ? '#dc2626' 
-        : '#334155';
+  const iconColor = disabled ? colors.text.muted : themeColors.text;
 
   return (
     <TouchableOpacity
@@ -52,7 +48,7 @@ export default function Button({
       disabled={disabled}
       style={[
         styles.container,
-        disabled ? styles.disabledContainer : { backgroundColor: colors.bg, borderColor: colors.border },
+        disabled ? styles.disabledContainer : { backgroundColor: themeColors.bg, borderColor: themeColors.border },
         style
       ]}
     >
@@ -64,9 +60,13 @@ export default function Button({
           </View>
         )}
 
-        <Text style={[styles.label, { color: disabled ? '#94a3b8' : colors.text }]}>
+        <Typography 
+          weight="bold" 
+          color={disabled ? colors.text.muted : themeColors.text}
+          style={styles.label}
+        >
           {label}
-        </Text>
+        </Typography>
 
       </View>
     </TouchableOpacity>
@@ -84,8 +84,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   disabledContainer: {
-    backgroundColor: '#f1f5f9',
-    borderColor: '#e2e8f0',
+    backgroundColor: colors.surfaceHighlight,
+    borderColor: colors.border,
     opacity: 0.7,
   },
   innerContainer: {
@@ -102,7 +102,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   label: {
-    fontWeight: 'bold',
     fontSize: 15,
   },
 });

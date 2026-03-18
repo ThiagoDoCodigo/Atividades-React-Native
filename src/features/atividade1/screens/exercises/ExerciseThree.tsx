@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { View, Text, ScrollView, Keyboard, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Keyboard, TouchableOpacity, StyleSheet } from 'react-native';
 import { Plus, ListChecks, Trash2 } from 'lucide-react-native';
 import InputField from '../../../../components/InputField';
 import ActionButton from '../../../../components/ActionButton';
 import ConfirmationModal from '../../../../components/ConfirmationModal';
+import Typography from '../../../../components/Typography';
+import EmptyState from '../../../../components/EmptyState';
 
 interface ExerciseThreeProps {
   onShowAlert: Function;
@@ -42,7 +44,7 @@ export default function ExerciseThree({ onShowAlert }: ExerciseThreeProps) {
   };
 
   return (
-    <View className="flex-1">
+    <View style={styles.container}>
       <ConfirmationModal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
@@ -53,9 +55,11 @@ export default function ExerciseThree({ onShowAlert }: ExerciseThreeProps) {
         isDestructive={true} 
       />
 
-      <Text className="font-bold text-slate-700 mb-2">Ex. 3: Lista de itens dinâmica</Text>
+      <Typography variant="title" style={styles.title}>
+        Ex. 3: Lista de itens dinâmica
+      </Typography>
       
-      <View className="flex-col mb-4">
+      <View style={styles.inputSection}>
         <InputField 
             label="Novo Item" 
             placeholder="O que você precisa fazer?" 
@@ -63,48 +67,46 @@ export default function ExerciseThree({ onShowAlert }: ExerciseThreeProps) {
             onChangeText={setTexto}
             onSubmitEditing={handleAdicionarItem}
         />
-        
         <ActionButton 
             label="Adicionar" 
             icon={Plus} 
             variant="primary" 
             onPress={handleAdicionarItem}
-            className="w-full" 
         />
-     </View>
+      </View>
 
-      <View className="flex-row items-center gap-2 mb-3">
+      <View style={styles.listHeader}>
         <ListChecks size={16} color="#64748b" />
-        <Text className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+        <Typography variant="label">
           Meus Itens ({itens.length})
-        </Text>
+        </Typography>
       </View>
 
       <ScrollView 
-        className="flex-1 bg-slate-50 rounded-xl border border-slate-200 p-3"
+        style={styles.scrollView}
         showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
       >
         {itens.length === 0 ? (
-          <View className="py-10 items-center justify-center">
-            <Text className="text-slate-400 text-sm italic">Sua lista está vazia.</Text>
-          </View>
+          <EmptyState message="Sua lista está vazia." />
         ) : (
-          <View className="gap-2 pb-4 mb-2">
+          <View style={styles.listContainer}>
             {itens.map((item, index) => (
-              <View 
-                key={index} 
-                className="bg-white p-3 rounded-lg border border-slate-100 shadow-sm flex-row items-center gap-3"
-              >
-                <View className="w-6 h-6 rounded-full bg-sky-100 items-center justify-center">
-                  <Text className="text-sky-600 font-bold text-xs">{index + 1}</Text>
+              <View key={index} style={styles.listItem}>
+                <View style={styles.avatar}>
+                  <Typography variant="caption" color="#0284c7" weight="bold">
+                    {index + 1}
+                  </Typography>
                 </View>
                 
-                <Text className="text-slate-700 font-medium flex-1">{item}</Text>
+                <Typography variant="body" weight="medium" style={styles.itemText}>
+                  {item}
+                </Typography>
 
                 <TouchableOpacity
                   activeOpacity={0.6}
                   onPress={() => requestDelete(index)}
-                  className="w-8 h-8 rounded-md items-center justify-center bg-red-50 border border-transparent active:bg-red-100 active:border-red-200 transition-colors"
+                  style={styles.deleteButton}
                 >
                   <Trash2 size={16} color="#ef4444" />
                 </TouchableOpacity>
@@ -116,3 +118,70 @@ export default function ExerciseThree({ onShowAlert }: ExerciseThreeProps) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  title: {
+    marginBottom: 8,
+  },
+  inputSection: {
+    marginBottom: 16,
+  },
+  listHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginBottom: 12,
+  },
+  scrollView: {
+    flex: 1,
+    backgroundColor: '#f8fafc',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    padding: 12,
+  },
+  scrollContent: {
+    paddingBottom: 16,
+  },
+  listContainer: {
+    gap: 8,
+  },
+  listItem: {
+    backgroundColor: '#ffffff',
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  avatar: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#e0f2fe',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  itemText: {
+    flex: 1,
+    color: '#334155',
+  },
+  deleteButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#fef2f2',
+  }
+});

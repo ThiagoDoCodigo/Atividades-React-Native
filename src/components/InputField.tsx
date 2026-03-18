@@ -1,25 +1,29 @@
 import { useState } from 'react';
-import { View, Text, TextInput, TextInputProps, StyleSheet } from 'react-native';
+import { View, TextInput, TextInputProps, StyleSheet } from 'react-native';
+import { colors } from '../config/theme';
+import Typography from './Typography';
 
 interface InputFieldProps extends TextInputProps {
   label: string;
+  error?: string;
 }
 
-export default function InputField({ label, onFocus, onBlur, style, ...rest }: InputFieldProps) {
+export default function InputField({ label, error, onFocus, onBlur, style, ...rest }: InputFieldProps) {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>
+      <Typography variant="label" style={styles.label}>
         {label}
-      </Text>
+      </Typography>
       <TextInput
         style={[
           styles.input,
           isFocused && styles.inputFocused,
+          error ? styles.inputError : null,
           style 
         ]}
-        placeholderTextColor="#94a3b8"
+        placeholderTextColor={colors.text.muted}
         onFocus={(e) => {
           setIsFocused(true);
           onFocus?.(e);
@@ -30,6 +34,7 @@ export default function InputField({ label, onFocus, onBlur, style, ...rest }: I
         }}
         {...rest}
       />
+      {error ? <Typography style={styles.errorText} color={colors.danger.main}>{error}</Typography> : null}
     </View>
   );
 }
@@ -40,27 +45,31 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   label: {
-    fontSize: 10,
-    fontWeight: 'bold',
-    color: '#94a3b8',
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
     marginBottom: 6,
     marginLeft: 4,
   },
   input: {
     width: '100%',
-    backgroundColor: '#f8fafc',
+    backgroundColor: colors.surfaceHighlight,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.border,
     borderRadius: 12,
     paddingHorizontal: 16,
     height: 48,
-    color: '#334155',
+    color: colors.text.primary,
     fontSize: 14,
   },
   inputFocused: {
-    borderColor: '#0ea5e9',
-    backgroundColor: '#ffffff',
+    borderColor: colors.primary.main,
+    backgroundColor: colors.surface,
   },
+  inputError: {
+    borderColor: colors.danger.main,
+  },
+  errorText: {
+    fontSize: 11,
+    marginLeft: 4,
+    marginTop: 4,
+    fontWeight: '500',
+  }
 });

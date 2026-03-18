@@ -1,5 +1,6 @@
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, ScrollView, Image, StyleSheet } from 'react-native';
 import { Image as ImageIcon } from 'lucide-react-native';
+import Typography from '../../../../components/Typography';
 
 export default function ExerciseTwo() {
   const images = [
@@ -12,38 +13,90 @@ export default function ExerciseTwo() {
   ];
 
   return (
-    <View className="flex-1 pb-2">
-      <View className="flex-row items-center justify-between mb-4">
+    <View style={styles.container}>
+      <View style={styles.headerRow}>
         <View>
-          <Text className="font-bold text-slate-700">Ex. 2: Galeria com ScrollView</Text>
-          <Text className="text-sm text-slate-500 mt-1">Exibindo 6 imagens sequenciais.</Text>
+          <Typography variant="title">Ex. 2: Galeria com ScrollView</Typography>
+          <Typography variant="caption" style={styles.subtitle}>Exibindo 6 imagens sequenciais.</Typography>
         </View>
-        <View className="p-2 bg-slate-100 rounded-lg">
+        <View style={styles.iconContainer}>
           <ImageIcon size={18} color="#64748b" />
         </View>
       </View>
 
       <ScrollView 
         showsVerticalScrollIndicator={false}
-        className="flex-1 rounded-xl bg-slate-50 border border-slate-100 p-3"
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
       >
-        <View className="gap-3 pb-4 mb-2">
-          {images.map((img) => (
-            <View key={img.id} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-              <Image 
-                source={{ uri: img.uri }} 
-                className="w-full h-60"
-                resizeMode="cover"
-              />
-              <View className="p-2 bg-white">
-                <Text className="text-[10px] font-bold text-slate-400 uppercase text-center">
-                  Imagem {img.id}
-                </Text>
-              </View>
+        {images.map((img) => (
+          <View key={img.id} style={styles.card}>
+            <Image 
+              source={{ uri: img.uri }} 
+              style={styles.image}
+              resizeMode="cover"
+            />
+            <View style={styles.cardFooter}>
+              <Typography variant="label" align="center">
+                Imagem {img.id}
+              </Typography>
             </View>
-          ))}
-        </View>
+          </View>
+        ))}
       </ScrollView>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingBottom: 8,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  subtitle: {
+    marginTop: 4,
+  },
+  iconContainer: {
+    padding: 8,
+    backgroundColor: '#f1f5f9',
+    borderRadius: 8,
+  },
+  scrollView: {
+    flex: 1,
+    backgroundColor: '#f8fafc',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    padding: 12,
+  },
+  scrollContent: {
+    gap: 12,
+    paddingBottom: 16,
+  },
+  card: {
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  image: {
+    width: '100%',
+    height: 240,
+  },
+  cardFooter: {
+    padding: 8,
+    backgroundColor: '#ffffff',
+  }
+});

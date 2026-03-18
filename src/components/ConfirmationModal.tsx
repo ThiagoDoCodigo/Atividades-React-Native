@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { Modal, View, Text, TouchableOpacity, Pressable, Animated, StyleSheet } from 'react-native';
+import { Modal, View, TouchableOpacity, Pressable, Animated, StyleSheet } from 'react-native';
 import { AlertCircle, X, AlertTriangle } from 'lucide-react-native';
+import { colors } from '../config/theme';
+import Typography from './Typography';
+import Button from './CustomButton';
 
 interface ConfirmationModalProps {
   isOpen: boolean;
@@ -67,14 +70,14 @@ export default function ConfirmationModal({
                   ]}
                 >
                   {isDestructive ? (
-                    <AlertTriangle size={24} color="#ef4444" strokeWidth={2} />
+                    <AlertTriangle size={24} color={colors.danger.main} strokeWidth={2} />
                   ) : (
-                    <AlertCircle size={24} color="#f59e0b" strokeWidth={2} />
+                    <AlertCircle size={24} color={colors.warning.main} strokeWidth={2} />
                   )}
                 </View>
-                <Text style={styles.title}>
+                <Typography variant="title" style={styles.titleText}>
                   {title}
-                </Text>
+                </Typography>
               </View>
 
               <TouchableOpacity
@@ -82,43 +85,34 @@ export default function ConfirmationModal({
                 style={styles.closeButton}
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >
-                <X size={20} color="#94a3b8" />
+                <X size={20} color={colors.text.muted} />
               </TouchableOpacity>
             </View>
 
             <View style={styles.body}>
-              <Text style={styles.message}>
+              <Typography variant="body" color={colors.text.secondary}>
                 {message}
-              </Text>
+              </Typography>
             </View>
 
             <View style={styles.footer}>
               
-              <TouchableOpacity
+              <Button 
+                label={cancelText}
                 onPress={onClose}
-                activeOpacity={0.7}
-                style={styles.cancelButton}
-              >
-                <Text style={styles.cancelText}>
-                  {cancelText}
-                </Text>
-              </TouchableOpacity>
+                variant="outline"
+                style={styles.flexButton}
+              />
 
-              <TouchableOpacity
+              <Button 
+                label={confirmText}
                 onPress={() => {
                   onConfirm();
                   onClose();
                 }}
-                activeOpacity={0.7}
-                style={[
-                  styles.confirmButton,
-                  isDestructive ? styles.confirmDestructive : styles.confirmNormal
-                ]}
-              >
-                <Text style={styles.confirmText}>
-                  {confirmText}
-                </Text>
-              </TouchableOpacity>
+                variant={isDestructive ? 'danger' : 'primary'}
+                style={styles.flexButton}
+              />
 
             </View>
           </Animated.View>
@@ -140,11 +134,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   modal: {
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     borderRadius: 16,
     width: '100%',
     borderWidth: 1,
-    borderColor: '#f1f5f9',
+    borderColor: colors.border,
     overflow: 'hidden',
     shadowColor: 'rgba(0, 0, 0, 0.2)',
     shadowOffset: { width: 0, height: 25 },
@@ -158,7 +152,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: 20,
     borderBottomWidth: 1,
-    borderBottomColor: '#f1f5f9',
+    borderBottomColor: colors.border,
   },
   headerLeft: {
     flexDirection: 'row',
@@ -171,81 +165,34 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   iconDestructive: {
-    backgroundColor: '#fef2f2',
-    borderColor: '#fee2e2',
+    backgroundColor: colors.danger.faded,
+    borderColor: colors.danger.light,
   },
   iconNormal: {
-    backgroundColor: '#fffbeb',
-    borderColor: '#fef3c7',
+    backgroundColor: colors.warning.faded,
+    borderColor: colors.warning.light,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#1e293b',
+  titleText: {
+    fontSize: 18, 
   },
   closeButton: {
     padding: 6,
     borderRadius: 8,
-    backgroundColor: '#f8fafc',
+    backgroundColor: colors.surfaceHighlight,
   },
   body: {
     padding: 24,
-  },
-  message: {
-    fontSize: 14,
-    color: '#475569',
-    lineHeight: 22,
   },
   footer: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
     gap: 12,
     padding: 20,
-    backgroundColor: '#f8fafc',
+    backgroundColor: colors.surfaceHighlight,
     borderTopWidth: 1,
-    borderTopColor: '#f1f5f9',
+    borderTopColor: colors.border,
   },
-  cancelButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    backgroundColor: '#ffffff',
-    borderWidth: 1,
-    borderColor: '#e2e8f0',
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  cancelText: {
-    color: '#475569',
-    fontWeight: 'bold',
-    fontSize: 14,
-  },
-  confirmButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  confirmDestructive: {
-    backgroundColor: '#ef4444',
-    shadowColor: '#fecaca',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  confirmNormal: {
-    backgroundColor: '#0ea5e9',
-    shadowColor: '#bae6fd',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
-  confirmText: {
-    color: '#ffffff',
-    fontWeight: 'bold',
-    fontSize: 14,
-  },
+  flexButton: {
+    paddingHorizontal: 16, 
+  }
 });

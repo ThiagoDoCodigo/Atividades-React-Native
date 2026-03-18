@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Code2 } from 'lucide-react-native';
 import AlertMessage from '../../../components/AlertMessage';
 import TabNavigation from '../../../components/TabNavigation';
@@ -37,7 +37,7 @@ export default function Atividade1Screen() {
         />
       )}
 
-      <View style={{ flex: 1}}>         
+      <View style={styles.container}>         
         <Header 
           title="Prática Mobile" 
           subtitle="Prof. Thiago Goldoni Thomé" 
@@ -52,16 +52,16 @@ export default function Atividade1Screen() {
           setCurrentTab={setCurrentExercise} 
         />
 
-        <View style={{ flex: 1 }}>
-          <View style={{ flex: 1, display: currentExercise === 1 ? 'flex' : 'none' }}>
+        <View style={styles.content}>
+          <View style={[styles.exerciseContainer, { display: currentExercise === 1 ? 'flex' : 'none' }]}>
             <ExerciseOne onShowAlert={triggerAlert} />
           </View>
           
-          <View style={{ flex: 1, display: currentExercise === 2 ? 'flex' : 'none' }}>
+          <View style={[styles.exerciseContainer, { display: currentExercise === 2 ? 'flex' : 'none' }]}>
             <ExerciseTwo />
           </View>
           
-          <View style={{ flex: 1, display: currentExercise === 3 ? 'flex' : 'none' }}>
+          <View style={[styles.exerciseContainer, { display: currentExercise === 3 ? 'flex' : 'none' }]}>
             <ExerciseThree onShowAlert={triggerAlert} />
           </View>
         </View>
@@ -69,3 +69,15 @@ export default function Atividade1Screen() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  content: {
+    flex: 1,
+  },
+  exerciseContainer: {
+    flex: 1,
+  }
+});

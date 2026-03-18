@@ -1,8 +1,11 @@
 import { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { User, LogOut } from 'lucide-react-native';
 import { APP_ROUTES } from '../config/routes';
+import { colors } from '../config/theme';
+import Typography from './Typography';
+
 const LogoApp = require('../../assets/logo-react.png');
 
 export default function Sidebar(props: any) {
@@ -37,9 +40,9 @@ export default function Sidebar(props: any) {
                 label={route.label}
                 focused={isActive}
                 onPress={() => navigation.navigate(route.name)}
-                activeTintColor="#ffffff"
-                activeBackgroundColor="#0ea5e9" 
-                inactiveTintColor="#64748b"
+                activeTintColor={colors.text.inverse}
+                activeBackgroundColor={colors.primary.main} 
+                inactiveTintColor={colors.text.muted}
                 labelStyle={[
                   styles.label,
                   isActive && styles.labelActive
@@ -58,15 +61,19 @@ export default function Sidebar(props: any) {
         {isDropdownOpen && (
           <View style={styles.dropdown}>
             <TouchableOpacity activeOpacity={0.7} style={styles.dropdownItem}>
-              <User size={18} color="#334155" />
-              <Text style={styles.dropdownText}>Meu perfil</Text>
+              <User size={18} color={colors.text.primary} />
+              <Typography variant="body" weight="medium" color={colors.text.primary}>
+                Meu perfil
+              </Typography>
             </TouchableOpacity>
             
             <View style={styles.divider} />
             
             <TouchableOpacity activeOpacity={0.7} style={styles.dropdownItem}>
-              <LogOut size={18} color="#dc2626" />
-              <Text style={styles.dropdownTextDanger}>Sair</Text>
+              <LogOut size={18} color={colors.danger.main} />
+              <Typography variant="body" weight="medium" color={colors.danger.main}>
+                Sair
+              </Typography>
             </TouchableOpacity>
           </View>
         )}
@@ -77,16 +84,18 @@ export default function Sidebar(props: any) {
           style={[styles.profileBtn, isDropdownOpen && styles.profileBtnActive]}
         >
           <View style={styles.avatar}>
-            <Text style={styles.avatarText}>{userName.charAt(0)}</Text>
+            <Typography variant="title" color={colors.text.inverse} style={styles.avatarText}>
+              {userName.charAt(0)}
+            </Typography>
           </View>
 
           <View style={styles.userInfo}>
-            <Text style={styles.userName} numberOfLines={1}>
+            <Typography variant="body" weight="semibold" color={colors.text.primary} numberOfLines={1}>
               {userName}
-            </Text>
-            <Text style={styles.userEmail} numberOfLines={1}>
+            </Typography>
+            <Typography variant="caption" color={colors.text.secondary} numberOfLines={1}>
               {userEmail}
-            </Text>
+            </Typography>
           </View>
         </TouchableOpacity>
       </View>
@@ -97,7 +106,7 @@ export default function Sidebar(props: any) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f8fafc',
+    backgroundColor: colors.background,
   },
   scrollContent: {
     flexGrow: 1,
@@ -106,7 +115,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 16,
     borderBottomWidth: 1,
-    borderBottomColor: '#e2e8f0',
+    borderBottomColor: colors.border,
     alignItems: 'center',
   },
   logo: {
@@ -135,8 +144,8 @@ const styles = StyleSheet.create({
   footer: {
     padding: 16,
     borderTopWidth: 1,
-    borderTopColor: '#e2e8f0',
-    backgroundColor: '#f8fafc',
+    borderTopColor: colors.border,
+    backgroundColor: colors.background,
     zIndex: 50,
   },
   dropdown: {
@@ -144,11 +153,11 @@ const styles = StyleSheet.create({
     bottom: 90,
     left: 16,
     right: 16,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     borderRadius: 12,
     padding: 6,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.border,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
@@ -163,19 +172,9 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 8,
   },
-  dropdownText: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#334155',
-  },
-  dropdownTextDanger: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#dc2626',
-  },
   divider: {
     height: 1,
-    backgroundColor: '#f1f5f9',
+    backgroundColor: colors.surfaceHighlight,
     marginVertical: 4,
   },
   profileBtn: {
@@ -188,32 +187,21 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
   },
   profileBtnActive: {
-    backgroundColor: '#ffffff',
-    borderColor: '#e2e8f0',
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
   },
   avatar: {
     width: 40,
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#0ea5e9',
+    backgroundColor: colors.primary.main,
     borderRadius: 8,
   },
   avatarText: {
-    color: '#ffffff',
     fontSize: 16,
-    fontWeight: 'bold',
   },
   userInfo: {
     flex: 1,
-  },
-  userName: {
-    color: '#1e293b',
-    fontWeight: '600',
-    fontSize: 14,
-  },
-  userEmail: {
-    color: '#64748b',
-    fontSize: 12,
   },
 });

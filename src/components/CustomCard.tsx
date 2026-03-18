@@ -1,4 +1,6 @@
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { colors } from '../config/theme';
+import Typography from './Typography';
 
 interface CustomCardProps {
   title: string;
@@ -35,24 +37,24 @@ export default function CustomCard({
         )}
         <View style={styles.flex1}>
           <View style={styles.titleRow}>
-            <Text style={styles.title} numberOfLines={1}>
+            <Typography variant="title" style={styles.title} numberOfLines={1}>
               {title}
-            </Text>
+            </Typography>
             {RightIcon && onPressRight && (
               <TouchableOpacity onPress={onPressRight} style={styles.rightIconButton}>
-                <RightIcon size={16} color="#64748b" />
+                <RightIcon size={16} color={colors.text.muted} />
               </TouchableOpacity>
             )}
           </View>
-          <Text style={styles.description} numberOfLines={2}>
+          <Typography variant="body" color={colors.text.secondary} style={styles.description} numberOfLines={2}>
             {description || 'Sem descrição'}
-          </Text>
+          </Typography>
           {subDescription && SubIcon && (
             <View style={styles.subDescriptionRow}>
-              <SubIcon size={14} color="#0ea5e9" />
-              <Text style={styles.subDescriptionText} numberOfLines={1}>
+              <SubIcon size={14} color={colors.primary.main} />
+              <Typography variant="caption" weight="semibold" color={colors.primary.main} style={styles.subDescriptionText} numberOfLines={1}>
                 {subDescription}
-              </Text>
+              </Typography>
             </View>
           )}
         </View>
@@ -63,7 +65,9 @@ export default function CustomCard({
           activeOpacity={0.7}
           style={styles.bottomButton}
         >
-          <Text style={styles.bottomButtonText}>{bottomButtonText}</Text>
+          <Typography variant="body" weight="bold" color={colors.text.primary}>
+            {bottomButtonText}
+          </Typography>
         </TouchableOpacity>
       )}
     </View>
@@ -72,10 +76,10 @@ export default function CustomCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.border,
     padding: 16,
     marginBottom: 16,
     shadowColor: '#000',
@@ -89,10 +93,10 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   image: {
-    backgroundColor: '#f1f5f9',
+    backgroundColor: colors.surfaceHighlight,
     marginRight: 16,
     borderWidth: 1,
-    borderColor: '#e2e8f0',
+    borderColor: colors.border,
   },
   flex1: {
     flex: 1,
@@ -104,21 +108,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#1e293b',
     marginBottom: 4,
     flex: 1,
     paddingRight: 8,
   },
   rightIconButton: {
     padding: 4,
-    backgroundColor: '#f8fafc',
+    backgroundColor: colors.background,
     borderRadius: 9999,
   },
   description: {
-    fontSize: 14,
-    color: '#64748b',
-    lineHeight: 20,
     marginBottom: 8,
   },
   subDescriptionRow: {
@@ -128,21 +127,13 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   subDescriptionText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#0284c7',
     flex: 1,
   },
   bottomButton: {
     marginTop: 16,
     paddingTop: 16,
     borderTopWidth: 1,
-    borderTopColor: '#f1f5f9',
+    borderTopColor: colors.surfaceHighlight,
     alignItems: 'center',
-  },
-  bottomButtonText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#334155',
   },
 });

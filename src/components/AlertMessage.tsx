@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Animated, { 
   useSharedValue, 
   useAnimatedStyle, 
@@ -12,6 +12,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { CheckCircle2, XCircle, AlertTriangle, Info, X } from 'lucide-react-native';
+import { colors } from '../config/theme';
+import Typography from './Typography';
 
 type AlertType = 'success' | 'error' | 'warning' | 'info';
 type Position = 'top' | 'bottom';
@@ -58,27 +60,27 @@ export default function AlertMessage({
 
   const variantStyles = {
     success: {
-      iconBg: { backgroundColor: '#d1fae5' },
-      iconColor: '#10b981',
-      barColor: { backgroundColor: '#10b981' },
+      iconBg: { backgroundColor: colors.success.light },
+      iconColor: colors.success.main,
+      barColor: { backgroundColor: colors.success.main },
       Icon: CheckCircle2,
     },
     error: {
-      iconBg: { backgroundColor: '#fee2e2' },
-      iconColor: '#ef4444',
-      barColor: { backgroundColor: '#ef4444' },
+      iconBg: { backgroundColor: colors.danger.light },
+      iconColor: colors.danger.main,
+      barColor: { backgroundColor: colors.danger.main },
       Icon: XCircle,
     },
     warning: {
-      iconBg: { backgroundColor: '#fef3c7' },
-      iconColor: '#f59e0b',
-      barColor: { backgroundColor: '#fbbf24' },
+      iconBg: { backgroundColor: colors.warning.light },
+      iconColor: colors.warning.main,
+      barColor: { backgroundColor: colors.warning.main },
       Icon: AlertTriangle,
     },
     info: {
-      iconBg: { backgroundColor: '#e0f2fe' },
-      iconColor: '#0ea5e9',
-      barColor: { backgroundColor: '#0ea5e9' },
+      iconBg: { backgroundColor: colors.info.light },
+      iconColor: colors.info.main,
+      barColor: { backgroundColor: colors.info.main },
       Icon: Info,
     },
   };
@@ -108,12 +110,12 @@ export default function AlertMessage({
         </View>
 
         <View style={styles.textContainer}>
-          <Text style={styles.title}>
+          <Typography variant="title" style={styles.title}>
             {title}
-          </Text>
-          <Text style={styles.message}>
+          </Typography>
+          <Typography variant="body" color={colors.text.secondary} style={styles.message}>
             {message}
-          </Text>
+          </Typography>
         </View>
 
         <TouchableOpacity 
@@ -121,7 +123,7 @@ export default function AlertMessage({
           style={styles.closeButton}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
-          <X size={16} color="#94a3b8" />
+          <X size={16} color={colors.text.muted} />
         </TouchableOpacity>
       </View>
 
@@ -146,7 +148,7 @@ const styles = StyleSheet.create({
     left: 10,
     right: 10,
     zIndex: 100,
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.surface,
     borderRadius: 12,
     overflow: 'hidden',
     shadowColor: '#000',
@@ -174,25 +176,21 @@ const styles = StyleSheet.create({
     paddingTop: 2,
   },
   title: {
-    fontWeight: 'bold',
-    color: '#1e293b',
     fontSize: 15,
     marginBottom: 2,
   },
   message: {
-    fontSize: 14,
-    color: '#64748b',
     lineHeight: 18,
   },
   closeButton: {
     padding: 6,
-    backgroundColor: '#f8fafc',
+    backgroundColor: colors.surfaceHighlight,
     borderRadius: 9999,
   },
   progressBarContainer: {
     height: 4,
     width: '100%',
-    backgroundColor: '#f1f5f9',
+    backgroundColor: colors.surfaceHighlight,
   },
   progressBar: {
     height: '100%',

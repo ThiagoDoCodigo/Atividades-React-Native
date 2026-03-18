@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { View, Text, Keyboard, Alert } from 'react-native';
+import { View, Keyboard, StyleSheet } from 'react-native';
 import { Send } from 'lucide-react-native';
 import InputField from '../../../../components/InputField';
 import ActionButton from '../../../../components/ActionButton';
+import Typography from '../../../../components/Typography';
 
 export default function ExerciseOne({ onShowAlert }: any) {
   const [nome, setNome] = useState('');
@@ -18,15 +19,34 @@ export default function ExerciseOne({ onShowAlert }: any) {
   };
 
   return (
-    <View className="flex-1">
-      <Text className="font-bold text-slate-700 mb-2">Ex. 1: Input de usuário e alerta</Text>
-      <Text className="text-sm text-slate-500 mb-6 leading-relaxed">
+    <View style={styles.container}>
+      <Typography variant="title" style={styles.title}>
+        Ex. 1: Input de usuário e alerta
+      </Typography>
+      <Typography variant="subtitle" style={styles.description}>
         Digite seu nome abaixo. Ao confirmar, o aplicativo exibirá um alerta com o nome capturado.
-      </Text>
+      </Typography>
+      
       <InputField label="Nome do Usuário" placeholder="Ex: Thiago Ferreira" value={nome} onChangeText={setNome} />
-      <View className="mt-2">
+      
+      <View style={styles.buttonContainer}>
         <ActionButton label="Exibir Nome" icon={Send} variant="primary" onPress={handleExibirAlerta} />
       </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  title: {
+    marginBottom: 8,
+  },
+  description: {
+    marginBottom: 24,
+  },
+  buttonContainer: {
+    marginTop: 8,
+  }
+});

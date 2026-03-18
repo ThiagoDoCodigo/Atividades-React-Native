@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import { Trophy, Star } from 'lucide-react-native';
 import Header from '../../../components/Header';
-
 import CustomCard from '../../../components/CustomCard';
 import AlertModal from '../../../components/AlertModal';
 
@@ -136,7 +135,7 @@ export default function Atividade2Screen() {
         message={selectedClub?.historia}
         buttonText="Fechar História"
       />
-      <View style={{ flex: 1 }}>
+      <View style={styles.container}>
         <Header 
           title="Catálogo" 
           subtitle="Gigantes do Brasil" 
@@ -148,7 +147,7 @@ export default function Atividade2Screen() {
           data={clubs}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ paddingBottom: 20 }}
+          contentContainerStyle={styles.listContent}
           renderItem={({ item }) => (
             <CustomCard
               title={item.nome}
@@ -167,3 +166,12 @@ export default function Atividade2Screen() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  listContent: {
+    paddingBottom: 20,
+  }
+});

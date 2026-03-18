@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Modal, View, Text, TouchableOpacity, Pressable, Animated, ScrollView } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, Pressable, Animated, ScrollView, StyleSheet } from 'react-native';
 import { Info, X } from 'lucide-react-native';
 
 interface AlertModalProps {
@@ -34,35 +34,37 @@ export default function AlertModal({
 
   return (
     <Modal visible={isOpen} transparent animationType="fade" onRequestClose={onClose}>
-      <Pressable className="flex-1 justify-center items-center bg-slate-900/40 px-5" onPress={onClose}>
-        <Pressable onPress={(e) => e.stopPropagation()} className="w-full">
+      <Pressable style={styles.backdrop} onPress={onClose}>
+        <Pressable onPress={(e) => e.stopPropagation()} style={styles.container}>
           <Animated.View
-            style={{ transform: [{ scale: scaleAnim }], opacity: opacityAnim }}
-            className="bg-white rounded-2xl shadow-2xl overflow-hidden w-full border border-slate-100 max-h-[80vh]"
+            style={[
+              styles.modal,
+              { transform: [{ scale: scaleAnim }], opacity: opacityAnim }
+            ]}
           >
-            <View className="flex-row items-center justify-between p-5 border-b border-slate-100">
-              <View className="flex-row items-center gap-3">
-                <View className="p-2 rounded-full border bg-sky-50 border-sky-100">
+            <View style={styles.header}>
+              <View style={styles.headerLeft}>
+                <View style={styles.iconContainer}>
                   <Info size={24} color="#0ea5e9" strokeWidth={2} />
                 </View>
-                <Text className="text-lg font-bold text-slate-800">{title}</Text>
+                <Text style={styles.title}>{title}</Text>
               </View>
-              <TouchableOpacity onPress={onClose} className="p-1.5 rounded-lg bg-slate-50 active:bg-slate-100">
+              <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                 <X size={20} color="#94a3b8" />
               </TouchableOpacity>
             </View>
-            <ScrollView className="p-6">
-              <Text className="text-sm text-slate-600 leading-relaxed text-justify mb-4">
-                {message}
+            <ScrollView style={styles.body}>
+              <Text style={styles.message}>
+                {message || "Nenhuma mensagem foi informada."}
               </Text>
             </ScrollView>
-            <View className="p-5 bg-slate-50 border-t border-slate-100">
+            <View style={styles.footer}>
               <TouchableOpacity
                 onPress={onClose}
                 activeOpacity={0.7}
-                className="w-full py-3 bg-sky-500 rounded-xl justify-center items-center shadow-sm shadow-sky-200"
+                style={styles.actionButton}
               >
-                <Text className="text-white font-bold text-sm">{buttonText}</Text>
+                <Text style={styles.buttonText}>{buttonText}</Text>
               </TouchableOpacity>
             </View>
           </Animated.View>
@@ -71,3 +73,95 @@ export default function AlertModal({
     </Modal>
   );
 }
+
+const styles = StyleSheet.create({
+  backdrop: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(15, 23, 42, 0.4)',
+    paddingHorizontal: 20,
+  },
+  container: {
+    width: '100%',
+  },
+  modal: {
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    height: 'auto',
+    maxHeight: '90%',
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 25 },
+    shadowOpacity: 0.25,
+    shadowRadius: 50,
+    elevation: 24,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f1f5f9',
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  iconContainer: {
+    padding: 8,
+    borderRadius: 9999,
+    borderWidth: 1,
+    backgroundColor: '#f0f9ff',
+    borderColor: '#e0f2fe',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1e293b',
+  },
+  closeButton: {
+    padding: 6,
+    borderRadius: 8,
+    backgroundColor: '#f8fafc',
+  },
+  body: {
+    padding: 24,
+  },
+  message: {
+    fontSize: 14,
+    color: '#475569',
+    lineHeight: 22,
+    textAlign: 'justify',
+    marginBottom: 16,
+  },
+  footer: {
+    padding: 20,
+    backgroundColor: '#f8fafc',
+    borderTopWidth: 1,
+    borderTopColor: '#f1f5f9',
+  },
+  actionButton: {
+    width: '100%',
+    paddingVertical: 12,
+    backgroundColor: '#0ea5e9',
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#bae6fd',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+});

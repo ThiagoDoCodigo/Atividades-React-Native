@@ -1,20 +1,66 @@
-import { View, Text, TextInput, TextInputProps } from 'react-native';
+import { useState } from 'react';
+import { View, Text, TextInput, TextInputProps, StyleSheet } from 'react-native';
 
 interface InputFieldProps extends TextInputProps {
   label: string;
 }
 
-export default function InputField({ label, ...rest }: InputFieldProps) {
+export default function InputField({ label, onFocus, onBlur, style, ...rest }: InputFieldProps) {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
-    <View className="mb-4 w-full">
-      <Text className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5 ml-1">
+    <View style={styles.container}>
+      <Text style={styles.label}>
         {label}
       </Text>
       <TextInput
-        className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 h-12 text-slate-700 text-sm focus:border-sky-500 focus:bg-white transition-colors"
+        style={[
+          styles.input,
+          isFocused && styles.inputFocused,
+          style 
+        ]}
         placeholderTextColor="#94a3b8"
+        onFocus={(e) => {
+          setIsFocused(true);
+          onFocus?.(e);
+        }}
+        onBlur={(e) => {
+          setIsFocused(false);
+          onBlur?.(e);
+        }}
         {...rest}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 16,
+    width: '100%',
+  },
+  label: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    color: '#94a3b8',
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+    marginBottom: 6,
+    marginLeft: 4,
+  },
+  input: {
+    width: '100%',
+    backgroundColor: '#f8fafc',
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    height: 48,
+    color: '#334155',
+    fontSize: 14,
+  },
+  inputFocused: {
+    borderColor: '#0ea5e9',
+    backgroundColor: '#ffffff',
+  },
+});

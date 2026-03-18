@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { TouchableOpacity, Text, View, ActivityIndicator } from 'react-native';
-import Animated, { FadeIn, FadeOut, ZoomIn } from 'react-native-reanimated';
-import { Check, X, CheckCheck, ArrowRight } from 'lucide-react-native';
+import { TouchableOpacity, View, ActivityIndicator, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
+import { Check, X, ArrowRight } from 'lucide-react-native';
 
 export type ButtonVariant = 'primary' | 'outline' | 'danger';
 
@@ -13,7 +13,7 @@ interface ActionButtonProps {
   successLabel?: string;
   errorLabel?: string;
   iconPosition?: 'right' | 'left';
-  className?: string;
+  style?: StyleProp<ViewStyle>;
   variant?: ButtonVariant;
 }
 
@@ -25,7 +25,7 @@ export default function ActionButton({
   successLabel = 'Sucesso!',
   errorLabel = 'Erro!',
   iconPosition = 'left',
-  className = '',
+  style,
   variant = 'primary',
 }: ActionButtonProps) {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
@@ -47,42 +47,41 @@ export default function ActionButton({
   };
 
   const getColors = () => {
-    if (status === 'success') return { bg: 'bg-emerald-500', border: 'border-emerald-500', text: 'text-white' };
-    if (status === 'error') return { bg: 'bg-red-500', border: 'border-red-500', text: 'text-white' };
+    if (status === 'success') return { bg: '#10b981', border: '#10b981', text: '#ffffff' };
+    if (status === 'error') return { bg: '#ef4444', border: '#ef4444', text: '#ffffff' };
 
     switch (variant) {
       case 'danger':
-        return { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-600' };
+        return { bg: '#fef2f2', border: '#fecaca', text: '#dc2626' };
       case 'outline':
-        return { bg: 'bg-transparent', border: 'border-slate-300', text: 'text-slate-700' };
+        return { bg: 'transparent', border: '#cbd5e1', text: '#334155' };
       case 'primary':
       default:
-        return { bg: 'bg-sky-500', border: 'border-sky-500', text: 'text-white' };
+        return { bg: '#0ea5e9', border: '#0ea5e9', text: '#ffffff' };
     }
   };
 
   const colors = getColors();
   const isLeftIcon = iconPosition === 'left';
 
-  const iconColor = colors.text.includes('white') ? '#ffffff' : 
-                    colors.text.includes('red') ? '#dc2626' : '#334155';
+  const iconColor = colors.text === '#ffffff' ? '#ffffff' : 
+                    colors.text === '#dc2626' ? '#dc2626' : '#334155';
 
   return (
     <TouchableOpacity
       activeOpacity={0.7}
       onPress={handlePress}
       disabled={status === 'loading'}
-      className={`
-        flex-row items-center justify-center
-        h-12 px-5 rounded-xl border
-        ${colors.bg} ${colors.border}
-        ${status === 'loading' ? 'opacity-90' : 'opacity-100'}
-        ${className}
-      `}
+      style={[
+        styles.container,
+        { backgroundColor: colors.bg, borderColor: colors.border },
+        status === 'loading' ? styles.opacity90 : styles.opacity100,
+        style
+      ]}
     >
-      <View className={`flex-row items-center justify-center gap-2 ${!isLeftIcon ? 'flex-row-reverse' : ''}`}>
+      <View style={[styles.innerContainer, !isLeftIcon && styles.rowReverse]}>
         
-        <View className="w-5 h-5 items-center justify-center">
+        <View style={styles.iconContainer}>
           {status === 'idle' && (
             <Animated.View entering={ZoomIn.duration(200)}>
               <Icon size={18} color={iconColor} strokeWidth={2.5} />
@@ -108,24 +107,24 @@ export default function ActionButton({
           )}
         </View>
 
-        <View className="justify-center items-center overflow-hidden">
+        <View style={styles.textContainer}>
           {status === 'idle' && (
-            <Animated.Text entering={FadeIn.duration(200)} className={`font-bold text-[15px] ${colors.text}`}>
+            <Animated.Text entering={FadeIn.duration(200)} style={[styles.text, { color: colors.text }]}>
               {label}
             </Animated.Text>
           )}
           {status === 'loading' && (
-            <Animated.Text entering={FadeIn.duration(200)} className={`font-bold text-[15px] ${colors.text}`}>
+            <Animated.Text entering={FadeIn.duration(200)} style={[styles.text, { color: colors.text }]}>
               {loadingLabel}
             </Animated.Text>
           )}
           {status === 'success' && (
-            <Animated.Text entering={FadeIn.duration(200)} className="font-bold text-[15px] text-white">
+            <Animated.Text entering={FadeIn.duration(200)} style={[styles.text, { color: '#ffffff' }]}>
               {successLabel}
             </Animated.Text>
           )}
           {status === 'error' && (
-            <Animated.Text entering={FadeIn.duration(200)} className="font-bold text-[15px] text-white">
+            <Animated.Text entering={FadeIn.duration(200)} style={[styles.text, { color: '#ffffff' }]}>
               {errorLabel}
             </Animated.Text>
           )}
@@ -135,3 +134,45 @@ export default function ActionButton({
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 48,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  opacity90: {
+    opacity: 0.9,
+  },
+  opacity100: {
+    opacity: 1,
+  },
+  innerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  rowReverse: {
+    flexDirection: 'row-reverse',
+  },
+  iconContainer: {
+    width: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  text: {
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+});

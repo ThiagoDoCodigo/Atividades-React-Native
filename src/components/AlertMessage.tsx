@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Animated, { 
   useSharedValue, 
   useAnimatedStyle, 
@@ -56,38 +56,34 @@ export default function AlertMessage({
     width: `${progress.value}%`,
   }));
 
-  const styles = {
+  const variantStyles = {
     success: {
-      border: 'border-l-emerald-500',
-      iconBg: 'bg-emerald-100',
+      iconBg: { backgroundColor: '#d1fae5' },
       iconColor: '#10b981',
-      barColor: 'bg-emerald-500',
+      barColor: { backgroundColor: '#10b981' },
       Icon: CheckCircle2,
     },
     error: {
-      border: 'border-l-red-500',
-      iconBg: 'bg-red-100',
+      iconBg: { backgroundColor: '#fee2e2' },
       iconColor: '#ef4444',
-      barColor: 'bg-red-500',
+      barColor: { backgroundColor: '#ef4444' },
       Icon: XCircle,
     },
     warning: {
-      border: 'border-l-amber-400',
-      iconBg: 'bg-amber-100',
+      iconBg: { backgroundColor: '#fef3c7' },
       iconColor: '#f59e0b',
-      barColor: 'bg-amber-400',
+      barColor: { backgroundColor: '#fbbf24' },
       Icon: AlertTriangle,
     },
     info: {
-      border: 'border-l-sky-500',
-      iconBg: 'bg-sky-100',
+      iconBg: { backgroundColor: '#e0f2fe' },
       iconColor: '#0ea5e9',
-      barColor: 'bg-sky-500',
+      barColor: { backgroundColor: '#0ea5e9' },
       Icon: Info,
     },
   };
 
-  const activeStyle = styles[type];
+  const activeStyle = variantStyles[type];
   const ActiveIcon = activeStyle.Icon;
 
   const isTop = position === 'top';
@@ -98,33 +94,31 @@ export default function AlertMessage({
     <Animated.View
       entering={enteringAnimation}
       exiting={exitingAnimation}
-      style={{
-        position: 'absolute',
-        left: 10,
-        right: 10,
-        zIndex: 100,
-        top: isTop ? insets.top + 10 : undefined,
-        bottom: !isTop ? insets.bottom + 20 : undefined,
-      }}
-      className={`bg-white rounded-xl shadow-lg overflow-hidden ${activeStyle.border}`}
+      style={[
+        styles.container,
+        {
+          top: isTop ? insets.top + 10 : undefined,
+          bottom: !isTop ? insets.bottom + 20 : undefined,
+        }
+      ]}
     >
-      <View className="flex-row items-start p-4 gap-3">
-        <View className={`p-2 rounded-full shrink-0 ${activeStyle.iconBg}`}>
+      <View style={styles.content}>
+        <View style={[styles.iconContainer, activeStyle.iconBg]}>
           <ActiveIcon size={20} color={activeStyle.iconColor} strokeWidth={2} />
         </View>
 
-        <View className="flex-1 pt-0.5">
-          <Text className="font-bold text-slate-800 text-[15px] mb-0.5">
+        <View style={styles.textContainer}>
+          <Text style={styles.title}>
             {title}
           </Text>
-          <Text className="text-sm text-slate-500 leading-tight">
+          <Text style={styles.message}>
             {message}
           </Text>
         </View>
 
         <TouchableOpacity 
           onPress={onClose} 
-          className="p-1.5 bg-slate-50 rounded-full active:bg-slate-100"
+          style={styles.closeButton}
           hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
           <X size={16} color="#94a3b8" />
@@ -132,13 +126,75 @@ export default function AlertMessage({
       </View>
 
       {duration > 0 && (
-        <View className="h-1 w-full bg-slate-100">
+        <View style={styles.progressBarContainer}>
           <Animated.View 
-            style={progressStyle} 
-            className={`h-full ${activeStyle.barColor}`} 
+            style={[
+              styles.progressBar,
+              progressStyle,
+              activeStyle.barColor
+            ]} 
           />
         </View>
       )}
     </Animated.View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    left: 10,
+    right: 10,
+    zIndex: 100,
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 10,
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    padding: 16,
+    gap: 12,
+  },
+  iconContainer: {
+    padding: 8,
+    borderRadius: 9999,
+    flexShrink: 0,
+  },
+  textContainer: {
+    flex: 1,
+    paddingTop: 2,
+  },
+  title: {
+    fontWeight: 'bold',
+    color: '#1e293b',
+    fontSize: 15,
+    marginBottom: 2,
+  },
+  message: {
+    fontSize: 14,
+    color: '#64748b',
+    lineHeight: 18,
+  },
+  closeButton: {
+    padding: 6,
+    backgroundColor: '#f8fafc',
+    borderRadius: 9999,
+  },
+  progressBarContainer: {
+    height: 4,
+    width: '100%',
+    backgroundColor: '#f1f5f9',
+  },
+  progressBar: {
+    height: '100%',
+  },
+});

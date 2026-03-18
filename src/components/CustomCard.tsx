@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
 interface CustomCardProps {
   title: string;
@@ -24,34 +24,33 @@ export default function CustomCard({
   rightIcon: RightIcon,
 }: CustomCardProps) {
   return (
-    <View className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-4">
-      <View className="flex-row items-start">
+    <View style={styles.card}>
+      <View style={styles.rowStart}>
         {image && (
           <Image
             source={{ uri: image }}
-            style={{ width: 64, height: 64, borderRadius: 32 }}
-            className="bg-slate-100 mr-4 border border-slate-200"
+            style={[styles.image, { width: 64, height: 64, borderRadius: 32 }]}
             resizeMode="contain"
            />
         )}
-        <View className="flex-1">
-          <View className="flex-row items-start justify-between">
-            <Text className="text-lg font-bold text-slate-800 mb-1 flex-1 pr-2" numberOfLines={1}>
+        <View style={styles.flex1}>
+          <View style={styles.titleRow}>
+            <Text style={styles.title} numberOfLines={1}>
               {title}
             </Text>
             {RightIcon && onPressRight && (
-              <TouchableOpacity onPress={onPressRight} className="p-1 bg-slate-50 rounded-full active:bg-slate-100">
+              <TouchableOpacity onPress={onPressRight} style={styles.rightIconButton}>
                 <RightIcon size={16} color="#64748b" />
               </TouchableOpacity>
             )}
           </View>
-          <Text className="text-sm text-slate-500 leading-snug mb-2" numberOfLines={2}>
-            {description}
+          <Text style={styles.description} numberOfLines={2}>
+            {description || 'Sem descrição'}
           </Text>
           {subDescription && SubIcon && (
-            <View className="flex-row items-center gap-1.5 mt-1">
+            <View style={styles.subDescriptionRow}>
               <SubIcon size={14} color="#0ea5e9" />
-              <Text className="text-xs font-semibold text-sky-600 flex-1" numberOfLines={1}>
+              <Text style={styles.subDescriptionText} numberOfLines={1}>
                 {subDescription}
               </Text>
             </View>
@@ -62,11 +61,88 @@ export default function CustomCard({
         <TouchableOpacity
           onPress={onPressBottom}
           activeOpacity={0.7}
-          className="mt-4 pt-4 border-t border-slate-100 items-center"
+          style={styles.bottomButton}
         >
-          <Text className="text-sm font-bold text-slate-700">{bottomButtonText}</Text>
+          <Text style={styles.bottomButtonText}>{bottomButtonText}</Text>
         </TouchableOpacity>
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  card: {
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  rowStart: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  image: {
+    backgroundColor: '#f1f5f9',
+    marginRight: 16,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+  },
+  flex1: {
+    flex: 1,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1e293b',
+    marginBottom: 4,
+    flex: 1,
+    paddingRight: 8,
+  },
+  rightIconButton: {
+    padding: 4,
+    backgroundColor: '#f8fafc',
+    borderRadius: 9999,
+  },
+  description: {
+    fontSize: 14,
+    color: '#64748b',
+    lineHeight: 20,
+    marginBottom: 8,
+  },
+  subDescriptionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    marginTop: 4,
+  },
+  subDescriptionText: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#0284c7',
+    flex: 1,
+  },
+  bottomButton: {
+    marginTop: 16,
+    paddingTop: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#f1f5f9',
+    alignItems: 'center',
+  },
+  bottomButtonText: {
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#334155',
+  },
+});

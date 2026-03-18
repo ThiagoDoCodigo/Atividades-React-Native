@@ -1,4 +1,5 @@
-import { TouchableOpacity, Text, View } from 'react-native';
+import { TouchableOpacity, Text, View, StyleSheet, StyleProp, ViewStyle } from 'react-native';
+
 export type ButtonVariant = 'primary' | 'outline' | 'danger';
 
 interface ButtonProps {
@@ -6,7 +7,7 @@ interface ButtonProps {
   icon?: any;
   label: string;
   iconPosition?: 'right' | 'left';
-  className?: string;
+  style?: StyleProp<ViewStyle>;
   variant?: ButtonVariant;
   disabled?: boolean;
 }
@@ -16,7 +17,7 @@ export default function Button({
   icon: Icon,
   label,
   iconPosition = 'left',
-  className = '',
+  style,
   variant = 'primary',
   disabled = false,
 }: ButtonProps) {
@@ -24,12 +25,12 @@ export default function Button({
   const getColors = () => {
     switch (variant) {
       case 'danger':
-        return { bg: 'bg-red-50', border: 'border-red-200', text: 'text-red-600' };
+        return { bg: '#fef2f2', border: '#fecaca', text: '#dc2626' };
       case 'outline':
-        return { bg: 'bg-transparent', border: 'border-slate-300', text: 'text-slate-700' };
+        return { bg: 'transparent', border: '#cbd5e1', text: '#334155' };
       case 'primary':
       default:
-        return { bg: 'bg-sky-500', border: 'border-sky-500', text: 'text-white' };
+        return { bg: '#0ea5e9', border: '#0ea5e9', text: '#ffffff' };
     }
   };
 
@@ -38,9 +39,9 @@ export default function Button({
 
   const iconColor = disabled 
     ? '#94a3b8'
-    : colors.text.includes('white') 
+    : colors.text === '#ffffff' 
       ? '#ffffff' 
-      : colors.text.includes('red') 
+      : colors.text === '#dc2626' 
         ? '#dc2626' 
         : '#334155';
 
@@ -49,24 +50,21 @@ export default function Button({
       activeOpacity={0.7}
       onPress={onPress}
       disabled={disabled}
-      className={`
-        flex-row items-center justify-center
-        h-12 px-5 rounded-xl border
-        ${disabled ? 'bg-slate-100 border-slate-200 opacity-70' : `${colors.bg} ${colors.border}`}
-        ${className}
-      `}
+      style={[
+        styles.container,
+        disabled ? styles.disabledContainer : { backgroundColor: colors.bg, borderColor: colors.border },
+        style
+      ]}
     >
-      <View className={`flex-row items-center justify-center gap-2 ${!isLeftIcon ? 'flex-row-reverse' : ''}`}>
+      <View style={[styles.innerContainer, !isLeftIcon && styles.rowReverse]}>
         
         {Icon && (
-          <View className="items-center justify-center">
+          <View style={styles.iconWrapper}>
             <Icon size={18} color={iconColor} strokeWidth={2.5} />
           </View>
         )}
 
-        <Text 
-          className={`font-bold text-[15px] ${disabled ? 'text-slate-400' : colors.text}`}
-        >
+        <Text style={[styles.label, { color: disabled ? '#94a3b8' : colors.text }]}>
           {label}
         </Text>
 
@@ -74,3 +72,37 @@ export default function Button({
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 48,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    borderWidth: 1,
+  },
+  disabledContainer: {
+    backgroundColor: '#f1f5f9',
+    borderColor: '#e2e8f0',
+    opacity: 0.7,
+  },
+  innerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+  },
+  rowReverse: {
+    flexDirection: 'row-reverse',
+  },
+  iconWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  label: {
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+});

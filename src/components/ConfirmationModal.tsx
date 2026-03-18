@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Modal, View, Text, TouchableOpacity, Pressable, Animated } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, Pressable, Animated, StyleSheet } from 'react-native';
 import { AlertCircle, X, AlertTriangle } from 'lucide-react-native';
 
 interface ConfirmationModalProps {
@@ -46,22 +46,25 @@ export default function ConfirmationModal({
       onRequestClose={onClose}
     >
       <Pressable
-        className="flex-1 justify-center items-center bg-slate-900/40 px-5"
+        style={styles.backdrop}
         onPress={onClose}
       >
-        <Pressable onPress={(e) => e.stopPropagation()} className="w-full">
+        <Pressable onPress={(e) => e.stopPropagation()} style={styles.container}>
           
           <Animated.View
-            style={{ transform: [{ scale: scaleAnim }], opacity: opacityAnim }}
-            className="bg-white rounded-2xl shadow-2xl shadow-black/20 overflow-hidden w-full border border-slate-100"
+            style={[
+              styles.modal,
+              { transform: [{ scale: scaleAnim }], opacity: opacityAnim }
+            ]}
           >
             
-            <View className="flex-row items-center justify-between p-5 border-b border-slate-100">
-              <View className="flex-row items-center gap-3">
+            <View style={styles.header}>
+              <View style={styles.headerLeft}>
                 <View 
-                  className={`p-2 rounded-full border ${
-                    isDestructive ? 'bg-red-50 border-red-100' : 'bg-amber-50 border-amber-100'
-                  }`}
+                  style={[
+                    styles.iconContainer,
+                    isDestructive ? styles.iconDestructive : styles.iconNormal
+                  ]}
                 >
                   {isDestructive ? (
                     <AlertTriangle size={24} color="#ef4444" strokeWidth={2} />
@@ -69,34 +72,34 @@ export default function ConfirmationModal({
                     <AlertCircle size={24} color="#f59e0b" strokeWidth={2} />
                   )}
                 </View>
-                <Text className="text-lg font-bold text-slate-800">
+                <Text style={styles.title}>
                   {title}
                 </Text>
               </View>
 
               <TouchableOpacity
                 onPress={onClose}
-                className="p-1.5 rounded-lg bg-slate-50 active:bg-slate-100"
+                style={styles.closeButton}
                 hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
               >
                 <X size={20} color="#94a3b8" />
               </TouchableOpacity>
             </View>
 
-            <View className="p-6">
-              <Text className="text-sm text-slate-600 leading-relaxed">
+            <View style={styles.body}>
+              <Text style={styles.message}>
                 {message}
               </Text>
             </View>
 
-            <View className="flex-row justify-end gap-3 p-5 bg-slate-50 border-t border-slate-100">
+            <View style={styles.footer}>
               
               <TouchableOpacity
                 onPress={onClose}
                 activeOpacity={0.7}
-                className="px-5 py-3 bg-white border border-slate-200 rounded-xl justify-center items-center"
+                style={styles.cancelButton}
               >
-                <Text className="text-slate-600 font-bold text-sm">
+                <Text style={styles.cancelText}>
                   {cancelText}
                 </Text>
               </TouchableOpacity>
@@ -107,11 +110,12 @@ export default function ConfirmationModal({
                   onClose();
                 }}
                 activeOpacity={0.7}
-                className={`px-5 py-3 rounded-xl justify-center items-center shadow-sm ${
-                  isDestructive ? 'bg-red-500 shadow-red-200' : 'bg-sky-500 shadow-sky-200'
-                }`}
+                style={[
+                  styles.confirmButton,
+                  isDestructive ? styles.confirmDestructive : styles.confirmNormal
+                ]}
               >
-                <Text className="text-white font-bold text-sm">
+                <Text style={styles.confirmText}>
                   {confirmText}
                 </Text>
               </TouchableOpacity>
@@ -123,3 +127,125 @@ export default function ConfirmationModal({
     </Modal>
   );
 }
+
+const styles = StyleSheet.create({
+  backdrop: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(15, 23, 42, 0.4)',
+    paddingHorizontal: 20,
+  },
+  container: {
+    width: '100%',
+  },
+  modal: {
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#f1f5f9',
+    overflow: 'hidden',
+    shadowColor: 'rgba(0, 0, 0, 0.2)',
+    shadowOffset: { width: 0, height: 25 },
+    shadowOpacity: 1,
+    shadowRadius: 50,
+    elevation: 24,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f1f5f9',
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  iconContainer: {
+    padding: 8,
+    borderRadius: 9999,
+    borderWidth: 1,
+  },
+  iconDestructive: {
+    backgroundColor: '#fef2f2',
+    borderColor: '#fee2e2',
+  },
+  iconNormal: {
+    backgroundColor: '#fffbeb',
+    borderColor: '#fef3c7',
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1e293b',
+  },
+  closeButton: {
+    padding: 6,
+    borderRadius: 8,
+    backgroundColor: '#f8fafc',
+  },
+  body: {
+    padding: 24,
+  },
+  message: {
+    fontSize: 14,
+    color: '#475569',
+    lineHeight: 22,
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    gap: 12,
+    padding: 20,
+    backgroundColor: '#f8fafc',
+    borderTopWidth: 1,
+    borderTopColor: '#f1f5f9',
+  },
+  cancelButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    backgroundColor: '#ffffff',
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cancelText: {
+    color: '#475569',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+  confirmButton: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  confirmDestructive: {
+    backgroundColor: '#ef4444',
+    shadowColor: '#fecaca',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  confirmNormal: {
+    backgroundColor: '#0ea5e9',
+    shadowColor: '#bae6fd',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  confirmText: {
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: 14,
+  },
+});

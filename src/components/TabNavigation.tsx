@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 interface Tab {
   id: number;
@@ -13,7 +13,7 @@ interface TabNavigationProps {
 
 export default function TabNavigation({ tabs, currentTab, setCurrentTab }: TabNavigationProps) {
   return (
-    <View style={{ flexDirection: 'row', backgroundColor: '#f1f5f9', padding: 4, borderRadius: 12, marginBottom: 24 }}>
+    <View style={styles.container}>
       {tabs.map((tab) => {
         const isActive = currentTab === tab.id;
         return (
@@ -21,22 +21,16 @@ export default function TabNavigation({ tabs, currentTab, setCurrentTab }: TabNa
             key={tab.id}
             activeOpacity={0.8}
             onPress={() => setCurrentTab(tab.id)}
-            style={{
-              flex: 1,
-              paddingVertical: 10,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 8,
-              backgroundColor: isActive ? '#ffffff' : 'transparent',
-              ...(isActive ? { shadowColor: '#000', shadowOpacity: 0.05, shadowRadius: 2, elevation: 1 } : {})
-            }}
+            style={[
+              styles.tab,
+              isActive && styles.tabActive
+            ]}
           >
             <Text 
-              style={{ 
-                fontSize: 14, 
-                fontWeight: isActive ? 'bold' : '600', 
-                color: isActive ? '#0ea5e9' : '#64748b' 
-              }}
+              style={[
+                styles.text,
+                isActive ? styles.textActive : styles.textInactive
+              ]}
             >
               {tab.label}
             </Text>
@@ -46,3 +40,39 @@ export default function TabNavigation({ tabs, currentTab, setCurrentTab }: TabNa
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    backgroundColor: '#f1f5f9',
+    padding: 4,
+    borderRadius: 12,
+    marginBottom: 24,
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 8,
+    backgroundColor: 'transparent',
+  },
+  tabActive: {
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 2,
+    elevation: 1,
+  },
+  text: {
+    fontSize: 14,
+  },
+  textActive: {
+    fontWeight: 'bold',
+    color: '#0ea5e9',
+  },
+  textInactive: {
+    fontWeight: '600',
+    color: '#64748b',
+  },
+});

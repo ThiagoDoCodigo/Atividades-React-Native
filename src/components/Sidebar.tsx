@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { User, LogOut } from 'lucide-react-native';
 import { APP_ROUTES } from '../config/routes';
@@ -9,25 +9,24 @@ export default function Sidebar(props: any) {
   const { state, navigation } = props;
   const currentRouteName = state.routeNames[state.index];
   
-  //Ja deixei essa func para o futuro!
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const userName = "Thiago Ferreira Goncalves";
   const userEmail = "@thiagodocodigo";
 
   return (
-    <View className="flex-1 bg-gray-50">
-      <DrawerContentScrollView {...props} contentContainerStyle={{ flexGrow: 1 }}>
+    <View style={styles.container}>
+      <DrawerContentScrollView {...props} contentContainerStyle={styles.scrollContent}>
         
-        <View className="px-6 py-2 border-b border-gray-200 items-center justify-center">
+        <View style={styles.header}>
           <Image 
             source={LogoApp} 
             resizeMode="contain"
-            className="w-40 h-40" 
+            style={styles.logo} 
           />
         </View>
 
-        <View className="flex-1 pt-4 px-2">
+        <View style={styles.menu}>
           {APP_ROUTES.map((route) => {
             const isActive = currentRouteName === route.name;
             const Icon = route.icon;
@@ -41,46 +40,33 @@ export default function Sidebar(props: any) {
                 activeTintColor="#ffffff"
                 activeBackgroundColor="#0ea5e9" 
                 inactiveTintColor="#64748b"
-                labelStyle={{
-                  fontWeight: isActive ? 'bold' : '600',
-                  marginLeft: 2,
-                  fontSize: 14,
-                  letterSpacing: 0.3,
-                }}
+                labelStyle={[
+                  styles.label,
+                  isActive && styles.labelActive
+                ]}
                 icon={({ color }) => (
                   <Icon size={22} color={color} strokeWidth={isActive ? 2 : 1.5} />
                 )}
-                style={{
-                  borderRadius: 12,
-                  paddingHorizontal: 4,
-                  marginBottom: 4,
-                }}
+                style={styles.drawerItem}
               />
             );
           })}
         </View>
       </DrawerContentScrollView>
 
-      <View className="p-4 border-t border-gray-200 bg-gray-50 z-50 mb-4">
-        
+      <View style={styles.footer}>
         {isDropdownOpen && (
-          <View className="absolute bottom-20 left-4 right-4 bg-white shadow-xl rounded-xl p-1.5 border border-slate-100 z-50">
-            <TouchableOpacity 
-              activeOpacity={0.7}
-              className="flex-row items-center gap-3 px-3 py-3 rounded-lg active:bg-slate-50"
-            >
+          <View style={styles.dropdown}>
+            <TouchableOpacity activeOpacity={0.7} style={styles.dropdownItem}>
               <User size={18} color="#334155" />
-              <Text className="text-sm font-medium text-slate-700">Meu perfil</Text>
+              <Text style={styles.dropdownText}>Meu perfil</Text>
             </TouchableOpacity>
             
-            <View className="h-px bg-slate-100 my-1" />
+            <View style={styles.divider} />
             
-            <TouchableOpacity 
-              activeOpacity={0.7}
-              className="flex-row items-center gap-3 px-3 py-3 rounded-lg active:bg-red-50"
-            >
+            <TouchableOpacity activeOpacity={0.7} style={styles.dropdownItem}>
               <LogOut size={18} color="#dc2626" />
-              <Text className="text-sm font-medium text-red-600">Sair</Text>
+              <Text style={styles.dropdownTextDanger}>Sair</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -88,35 +74,146 @@ export default function Sidebar(props: any) {
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => setDropdownOpen(!isDropdownOpen)}
-          className={`flex-row items-center gap-3 p-2 rounded-xl border transition-colors ${
-            isDropdownOpen 
-              ? 'bg-white border-slate-200' 
-              : 'border-transparent bg-transparent'
-          }`}
+          style={[styles.profileBtn, isDropdownOpen && styles.profileBtnActive]}
         >
-          <View className="w-10 h-10 items-center justify-center bg-sky-500 rounded-lg shadow-sm shrink-0">
-            <Text className="text-white text-base font-bold">
-              {userName.charAt(0)}
-            </Text>
+          <View style={styles.avatar}>
+            <Text style={styles.avatarText}>{userName.charAt(0)}</Text>
           </View>
 
-          <View className="flex-1">
-            <Text 
-              className="text-slate-800 font-semibold text-sm" 
-              numberOfLines={1}
-            >
+          <View style={styles.userInfo}>
+            <Text style={styles.userName} numberOfLines={1}>
               {userName}
             </Text>
-            <Text 
-              className="text-gray-500 text-xs" 
-              numberOfLines={1}
-            >
+            <Text style={styles.userEmail} numberOfLines={1}>
               {userEmail}
             </Text>
           </View>
         </TouchableOpacity>
       </View>
-      
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f8fafc',
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
+  header: {
+    paddingHorizontal: 24,
+    paddingVertical: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#e2e8f0',
+    alignItems: 'center',
+  },
+  logo: {
+    width: 140,
+    height: 140,
+  },
+  menu: {
+    flex: 1,
+    paddingTop: 16,
+    paddingHorizontal: 8,
+  },
+  drawerItem: {
+    borderRadius: 12,
+    paddingHorizontal: 4,
+    marginBottom: 4,
+  },
+  label: {
+    fontWeight: '600',
+    marginLeft: 2,
+    fontSize: 14,
+    letterSpacing: 0.3,
+  },
+  labelActive: {
+    fontWeight: 'bold',
+  },
+  footer: {
+    padding: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#e2e8f0',
+    backgroundColor: '#f8fafc',
+    zIndex: 50,
+  },
+  dropdown: {
+    position: 'absolute',
+    bottom: 90,
+    left: 16,
+    right: 16,
+    backgroundColor: '#ffffff',
+    borderRadius: 12,
+    padding: 6,
+    borderWidth: 1,
+    borderColor: '#e2e8f0',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 5,
+    zIndex: 999,
+  },
+  dropdownItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    padding: 12,
+    borderRadius: 8,
+  },
+  dropdownText: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#334155',
+  },
+  dropdownTextDanger: {
+    fontSize: 14,
+    fontWeight: '500',
+    color: '#dc2626',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: '#f1f5f9',
+    marginVertical: 4,
+  },
+  profileBtn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    padding: 8,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'transparent',
+  },
+  profileBtnActive: {
+    backgroundColor: '#ffffff',
+    borderColor: '#e2e8f0',
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#0ea5e9',
+    borderRadius: 8,
+  },
+  avatarText: {
+    color: '#ffffff',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  userInfo: {
+    flex: 1,
+  },
+  userName: {
+    color: '#1e293b',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+  userEmail: {
+    color: '#64748b',
+    fontSize: 12,
+  },
+});

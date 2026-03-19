@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     padding: 24,
   },
   message: {
-    marginBottom: 16,
+    marginBottom: 28,
   },
   footer: {
     padding: 20,

@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Code2 } from 'lucide-react-native';
-import AlertMessage from '../../../components/AlertMessage';
-import TabNavigation from '../../../components/TabNavigation';
+import { AlertMessage,TabNavigation,Header } from 'react-native-th-components';
 import ExerciseOne from './exercises/ExerciseOne';
 import ExerciseTwo from './exercises/ExerciseTwo';
 import ExerciseThree from './exercises/ExerciseThree';
-import Header from '../../../components/Header';
 
 export default function Atividade1Screen() {
   const [currentExercise, setCurrentExercise] = useState(1);

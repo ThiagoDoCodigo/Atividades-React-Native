@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { View, Keyboard, StyleSheet } from 'react-native';
 import { Send } from 'lucide-react-native';
-import InputField from '../../../../components/InputField';
-import ActionButton from '../../../../components/ActionButton';
-import Typography from '../../../../components/Typography';
+
+import { InputField, ActionButton, Typography } from 'react-native-th-components';
 
 export default function ExerciseOne({ onShowAlert }: any) {
   const [nome, setNome] = useState('');

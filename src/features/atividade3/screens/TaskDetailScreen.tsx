@@ -3,11 +3,7 @@ import { View, Keyboard, StyleSheet } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Save, Trash2, ClipboardList } from 'lucide-react-native';
 
-import Header from '../../../components/Header';
-import InputField from '../../../components/InputField';
-import ActionButton from '../../../components/ActionButton';
-import CustomButton from '../../../components/CustomButton';
-import ConfirmationModal from '../../../components/ConfirmationModal';
+import { Header, InputField, ActionButton, Button, ConfirmationModal } from 'react-native-th-components';
 import { useTaskDetailViewModel } from '../viewModel/taskDetail.viewModel';
 
 export default function TaskDetailScreen() {
@@ -92,7 +88,7 @@ export default function TaskDetailScreen() {
         />
         
         {taskId && (
-          <CustomButton 
+          <Button 
             label="Excluir Tarefa" 
             icon={Trash2} 
             variant="danger" 

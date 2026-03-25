@@ -53,7 +53,13 @@ export class TaskDetailViewModel {
       return false;
     }
 
-    if(taskService.getAllTasks().some(t => t.title === this._title.trim())) {
+    if(taskService.getAllTasks().some(t => t.title === this._title.trim()) && !id) {
+      this._error = 'Ja existe uma tarefa com o mesmo título.';
+      this.setErrorCallback?.(this._error);
+      return false;
+    }
+
+    if(taskService.getAllTasks().some(t => t.title === this._title.trim()) && id && taskService.getTaskById(id)?.title !== this._title.trim()) {
       this._error = 'Ja existe uma tarefa com o mesmo título.';
       this.setErrorCallback?.(this._error);
       return false;

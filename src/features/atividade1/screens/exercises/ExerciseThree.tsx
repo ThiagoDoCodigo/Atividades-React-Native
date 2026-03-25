@@ -1,11 +1,8 @@
 import { useState } from 'react';
 import { View, ScrollView, Keyboard, TouchableOpacity, StyleSheet } from 'react-native';
 import { Plus, ListChecks, Trash2 } from 'lucide-react-native';
-import InputField from '../../../../components/InputField';
-import ActionButton from '../../../../components/ActionButton';
-import ConfirmationModal from '../../../../components/ConfirmationModal';
-import Typography from '../../../../components/Typography';
-import EmptyState from '../../../../components/EmptyState';
+
+import { InputField, ActionButton, ConfirmationModal, Typography, EmptyState } from 'react-native-th-components';
 
 interface ExerciseThreeProps {
   onShowAlert: Function;

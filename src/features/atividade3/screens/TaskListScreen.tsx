@@ -3,10 +3,7 @@ import { View, FlatList, StyleSheet } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { ListTodo, Clock, Plus, ChevronRight } from 'lucide-react-native';
 
-import Header from '../../../components/Header';
-import CustomCard from '../../../components/CustomCard';
-import CustomButton from '../../../components/CustomButton';
-import EmptyState from '../../../components/EmptyState';
+import { Header, CustomCard, Button, EmptyState } from 'react-native-th-components';
 import { useTaskListViewModel } from '../viewModel/taskList.viewModel';
 
 export default function TaskListScreen() {
@@ -58,7 +55,7 @@ export default function TaskListScreen() {
       />
 
       <View style={styles.floatingButtonContainer}>
-        <CustomButton 
+        <Button 
           label="Nova Tarefa" 
           icon={Plus} 
           onPress={handleCreateTask}

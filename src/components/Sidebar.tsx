@@ -4,7 +4,7 @@ import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { User, LogOut } from 'lucide-react-native';
 import { APP_ROUTES } from '../config/routes';
 import { colors } from '../config/theme';
-import Typography from './Typography';
+import { Typography } from 'react-native-th-components';
 
 const LogoApp = require('../../assets/logo-react.png');
 

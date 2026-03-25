@@ -107,9 +107,8 @@ export const Theme = {
 
 export type ThemeColors = typeof Theme.light;
 
-// Para puxar automático do celular depois
-// const currentTheme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
+const currentTheme = Appearance.getColorScheme() === 'dark' ? 'dark' : 'light';
 
-const currentTheme = 'dark';
+// const currentTheme = 'dark';
 
 export const colors = Theme[currentTheme];

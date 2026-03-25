@@ -1,6 +1,6 @@
 import { View, ScrollView, Image, StyleSheet } from 'react-native';
 import { Image as ImageIcon } from 'lucide-react-native';
-import Typography from '../../../../components/Typography';
+import { Typography } from 'react-native-th-components';
 
 export default function ExerciseTwo() {
   const images = [

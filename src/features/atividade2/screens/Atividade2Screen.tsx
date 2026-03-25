@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { Trophy, Star } from 'lucide-react-native';
-import Header from '../../../components/Header';
-import CustomCard from '../../../components/CustomCard';
-import AlertModal from '../../../components/AlertModal';
+
+import { Header, CustomCard, AlertModal } from 'react-native-th-components';
 
 const clubes = [
   {
@@ -117,13 +116,13 @@ export default function Atividade2Screen() {
   };
 
   const getDynamicStarIcon = (isFavorited: boolean) => {
-    return ({ size, color }: any) => (
+    return (({ size, color }: any) => (
       <Star
         size={size}
         color={isFavorited ? '#eab308' : color}
         fill={isFavorited ? '#eab308' : 'transparent'}
       />
-    );
+    )) as any; 
   };
 
   return (
